@@ -86,12 +86,52 @@ for (let i = 0; i < 3; i++) {
 ---
 
 ### What will you do to optimize the performance of a JavaScript app?
-- Minify & bundle JS/CSS.  
-- Use lazy loading, code splitting.  
-- Optimize DOM manipulation.  
-- Debounce/throttle events.  
-- Use caching (localStorage, service workers).  
-- Optimize assets (images, fonts).  
+- **Minify & bundle JS/CSS**  
+  → Giảm dung lượng file tải xuống.
+
+- **Use lazy loading & code splitting**  
+  → Load code khi cần (component theo route).  
+  ```js
+  const LazyComponent = React.lazy(() => import("./MyComponent"));
+  ```
+
+- **Optimize DOM manipulation**  
+  → Hạn chế thao tác DOM trực tiếp, gộp thay đổi.  
+  ```js
+  // ❌ Không tối ưu
+  for (let i = 0; i < 1000; i++) {
+    document.body.appendChild(document.createElement("div"));
+  }
+
+  // ✅ Tối ưu
+  const frag = document.createDocumentFragment();
+  for (let i = 0; i < 1000; i++) {
+    frag.appendChild(document.createElement("div"));
+  }
+  document.body.appendChild(frag);
+  ```
+
+- **Debounce / Throttle events**  
+  → Tránh gọi handler liên tục (scroll, resize, input).  
+  ```js
+  function debounce(fn, delay) {
+    let timer;
+    return (...args) => {
+      clearTimeout(timer);
+      timer = setTimeout(() => fn(...args), delay);
+    };
+  }
+
+  window.addEventListener("resize", debounce(() => {
+    console.log("Resize event (debounced)");
+  }, 300));
+  ```
+
+- **Use caching** (localStorage, sessionStorage, service workers).  
+  → Lưu dữ liệu hay dùng, giảm gọi API.  
+
+- **Optimize assets** (nén ảnh, preload font, dùng webp/avif).  
+
 
 ---
 
@@ -99,6 +139,14 @@ for (let i = 0; i < 3; i++) {
 - **Reduce bundle size** → faster load times, less parsing.  
 - **Lazy loading** → load only what’s needed, defer non-critical code.  
 => Improves first paint & time-to-interactive.  
+
+- **Reduce bundle size**  
+  → Tải nhanh hơn, parse nhanh hơn.  
+
+- **Lazy loading**  
+  → Chỉ tải code khi cần, defer phần không quan trọng.  
+
+👉 Kết quả: cải thiện **First Paint (FP)** và **Time To Interactive (TTI)**.  
 
 ---
 
@@ -110,24 +158,80 @@ Critical Rendering Path (CRP):
 4. Layout (calculate positions & sizes).  
 5. Paint pixels to screen.  
 
+Đường đi để browser render ra màn hình:
+
+1. Parse **HTML** → DOM tree.  
+2. Parse **CSS** → CSSOM tree.  
+3. Kết hợp DOM + CSSOM → **Render Tree**.  
+4. **Layout** → tính toán kích thước, vị trí.  
+5. **Paint** → vẽ pixel lên màn hình.  
+
 ---
 
 ### What is defer/ async
 - **defer**: loads JS in parallel but executes after HTML parsing is finished.  
 - **async**: loads JS in parallel and executes immediately when ready (may block parsing).  
 
+- **`defer`**
+  - Load JS song song với HTML.  
+  - Thực thi sau khi HTML parse xong.  
+  - Giữ đúng thứ tự script.  
+  ```html
+  <script src="app.js" defer></script>
+  ```
+
+- **`async`**
+  - Load JS song song với HTML.  
+  - Thực thi ngay khi tải xong (có thể ngắt HTML parsing).  
+  ```html
+  <script src="analytics.js" async></script>
+  ```
+
+👉 Best practice:  
+- `defer` cho JS chính của app.  
+- `async` cho script ngoài (analytics, ads).  
+
 ---
 
 ### What is a pure function
-- A function with:
-  - No side effects.  
-  - Returns the same output for the same input.  
+👉 Một function **pure** nếu:  
+1. **Không có side effects** (không thay đổi biến ngoài, DOM, API...).  
+2. **Cùng input → luôn cùng output**.  
 
+### Ví dụ: Pure Function
 ```js
 function add(a, b) {
-  return a + b;
+  return a + b; 
 }
+
+console.log(add(2, 3)); // 5
+console.log(add(2, 3)); // 5 (luôn như nhau)
 ```
+
+### Ví dụ: Impure Function (side effect)
+```js
+let counter = 0;
+function increase() {
+  return ++counter; 
+}
+
+console.log(increase()); // 1
+console.log(increase()); // 2 (input giống, output khác)
+```
+
+### Ví dụ: Impure Function (phụ thuộc external)
+```js
+function getTime() {
+  return new Date().toLocaleTimeString();
+}
+console.log(getTime()); // mỗi lần gọi khác nhau
+```
+
+### Ứng dụng của Pure Function
+- Dễ test.  
+- Dễ debug.  
+- Hợp với functional programming (map, filter, reduce).  
+
 
 ---
 
@@ -170,6 +274,119 @@ console.log(square(4)); // 16 (cached)
 - Use **ReadableStream** / **WritableStream** APIs.  
 - Process data in chunks (useful for video/audio).  
 - Example: fetch large files with streaming.  
+
+**Data Streaming** là quá trình xử lý dữ liệu khi nó được truyền đến theo luồng (chunks) thay vì chờ tải toàn bộ. Điều này quan trọng trong các ứng dụng **real-time** như video, audio, chat, hay xử lý file lớn.  
+
+---
+
+#### 🛠 Cách xử lý data streaming:
+
+1. **Sử dụng Stream API (Node.js)**  
+   - Node.js có `Readable`, `Writable`, `Transform`, `Duplex`.  
+   - Ví dụ: đọc file lớn bằng `fs.createReadStream()` thay vì `fs.readFile()`.  
+
+   ```js
+   const fs = require("fs");
+
+   const readStream = fs.createReadStream("largeFile.txt", { encoding: "utf8" });
+   readStream.on("data", (chunk) => {
+     console.log("Received chunk:", chunk.length);
+   });
+   readStream.on("end", () => {
+     console.log("File reading completed");
+   });
+   ```
+
+---
+
+2. **Sử dụng Web Streams API (Browser)**  
+   - Trong trình duyệt hiện đại, `ReadableStream`, `WritableStream` cho phép xử lý streaming response từ `fetch`.  
+
+   ```js
+   fetch("https://example.com/large-data")
+     .then(response => {
+       const reader = response.body.getReader();
+       return reader.read().then(function process({ done, value }) {
+         if (done) {
+           console.log("Streaming finished");
+           return;
+         }
+         console.log("Chunk received:", value.length);
+         return reader.read().then(process);
+       });
+     });
+   ```
+
+---
+
+3. **Sử dụng WebSocket cho real-time**  
+   - Thay vì request-response, WebSocket giữ kết nối liên tục để truyền data streaming theo thời gian thực.  
+
+   ```js
+   const socket = new WebSocket("ws://localhost:8080");
+
+   socket.onmessage = (event) => {
+     console.log("Message from server:", event.data);
+   };
+   ```
+
+---
+
+4. **Backpressure Handling (Điều tiết luồng dữ liệu)**  
+   - Không phải lúc nào consumer cũng đọc nhanh như producer.  
+   - Streams có cơ chế **pause/resume** hoặc **highWaterMark** để tránh memory overflow.  
+
+   ```js
+   const stream = fs.createReadStream("largeFile.txt", { highWaterMark: 1024 });
+
+   stream.on("data", (chunk) => {
+     stream.pause(); // tạm dừng nếu consumer chưa xử lý xong
+     console.log("Chunk:", chunk);
+     setTimeout(() => stream.resume(), 100); // resume sau khi xử lý
+   });
+   ```
+
+---
+
+#### ✅ Tóm gọn:
+- **File lớn → dùng Stream API.**  
+- **Trình duyệt → dùng Web Streams API.**  
+- **Real-time → WebSocket/EventSource.**  
+- **Quan trọng**: luôn xử lý **backpressure** để tránh quá tải bộ nhớ.  
+
+### 1. Data Chunking là gì?
+**Data chunking** = chia nhỏ dữ liệu lớn thành nhiều phần (chunk) nhỏ để dễ xử lý hơn.
+
+**Ví dụ:**
+- Upload file 1GB → chia thành nhiều chunk 10MB để upload dần.
+- Mảng 100.000 phần tử → chia thành từng batch 1000 phần tử để xử lý.
+
+
+### 2. Tại sao cần chunking?
+- **Tiết kiệm bộ nhớ**: không load toàn bộ dữ liệu.
+- **Nhanh hơn**: có thể xử lý song song.
+- **Ổn định**: retry từng chunk khi lỗi.
+- **Mở rộng**: phù hợp với stream, upload/download file, gọi API nhiều request.
+
+---
+
+### 3. Best Practices (không dùng thư viện ngoài)
+
+### (a) Chia nhỏ **Array / String**
+```js
+function chunkArray(arr, size) {
+  let result = [];
+  for (let i = 0; i < arr.length; i += size) {
+    result.push(arr.slice(i, i + size));
+  }
+  return result;
+}
+
+// Ví dụ
+const data = [1, 2, 3, 4, 5, 6, 7];
+console.log(chunkArray(data, 3));
+// [[1,2,3], [4,5,6], [7]]
+
 
 ---
 
