@@ -192,3 +192,89 @@ div { color: blue; }        /* 0-0-1 */
 ```
 
 👉 **Khuyến nghị hiện nay: Mobile-first** (ưu tiên trải nghiệm mobile).  
+
+
+
+# 📘 HTML & CSS Q&A
+
+### How to customize styles in a project?
+- Có thể tùy chỉnh style trong dự án theo nhiều cách:
+  1. **Inline styles**: thêm trực tiếp vào thuộc tính `style` trong HTML.  
+     ```html
+     <p style="color: red;">Hello</p>
+     ```
+  2. **Internal CSS**: viết trong thẻ `<style>` của file HTML.  
+     ```html
+     <style>
+       p { color: blue; }
+     </style>
+     ```
+  3. **External CSS**: tách ra file `.css` riêng, dùng `<link>` để import. (Khuyến khích).  
+     ```html
+     <link rel="stylesheet" href="styles.css">
+     ```
+  4. **CSS Preprocessor**: SCSS, LESS để viết code CSS có biến, mixin.  
+  5. **CSS-in-JS / Utility-first**: styled-components, Tailwind CSS.  
+
+---
+
+### How does Media Query work?
+- **Media Query** cho phép áp dụng CSS **tùy theo điều kiện môi trường** (kích thước màn hình, orientation, độ phân giải...).  
+- Cú pháp:  
+  ```css
+  @media (max-width: 768px) {
+    body {
+      background-color: lightblue;
+    }
+  }
+  ```
+- Ví dụ trên: khi màn hình ≤ 768px, màu nền sẽ đổi thành xanh nhạt.  
+
+---
+
+### What are rem & em (besides pixel, are there any other units)?
+- **px**: đơn vị tuyệt đối (1px = 1 điểm ảnh).  
+- **em**: dựa trên **font-size của phần tử cha**.  
+  - `2em` = gấp 2 lần font-size của cha.  
+- **rem** (root em): dựa trên **font-size của root (`html`)**.  
+  - Nếu `html { font-size: 16px }`, thì `2rem = 32px`.  
+
+👉 Ngoài ra còn có các đơn vị khác:  
+- **%**: theo phần trăm kích thước phần tử cha.  
+- **vw / vh**: viewport width/height (1vw = 1% chiều rộng màn hình).  
+- **vmin / vmax**: theo cạnh nhỏ/lớn hơn của viewport.  
+- **ch**: chiều rộng của ký tự "0".  
+
+---
+
+### What HTML tag represents the root?
+- Thẻ **`<html>`** là **root element** trong một tài liệu HTML.  
+- Nó chứa toàn bộ nội dung trang: `<head>` + `<body>`.  
+
+Ví dụ:
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>My Page</title>
+  </head>
+  <body>
+    <h1>Hello World</h1>
+  </body>
+</html>
+```
+
+---
+
+### How many phases does an event in HTML have?
+Sự kiện trong HTML có **3 giai đoạn (event phases)**:
+1. **Capturing phase**: Sự kiện đi từ `window` → `document` → phần tử cha ngoài cùng.  
+2. **Target phase**: Sự kiện xảy ra tại chính phần tử được target.  
+3. **Bubbling phase**: Sự kiện lan ngược từ target → cha → document → window.  
+
+👉 Có thể chọn `useCapture = true` khi `addEventListener` để bắt sự kiện ở **capturing** thay vì bubbling (mặc định).  
+
+```js
+element.addEventListener("click", handler, true); // capturing
+element.addEventListener("click", handler, false); // bubbling
+```
