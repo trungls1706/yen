@@ -1,3 +1,5 @@
+link bài viết hay : https://viblo.asia/p/micro-frontend-architecture-huong-dan-toan-dien-ve-kien-truc-frontend-hien-dai-2025-3RL1BK8vVao#_5-dynamic-imports-nextjs-15
+
 MFEs, hay **micro-frontends**, là một kiến trúc trong phát triển web, trong đó một ứng dụng front-end lớn được chia thành nhiều ứng dụng nhỏ hơn, độc lập. Mỗi MFE có thể được phát triển, thử nghiệm và triển khai riêng biệt bởi các nhóm khác nhau, cho phép các nhóm này làm việc tự chủ và tăng tốc độ phát triển.
 
 Việc chia sẻ trạng thái (state) giữa các MFE là một thách thức lớn, vì mục tiêu của kiến trúc này là sự độc lập. Dưới đây là một số cách tiếp cận phổ biến để giải quyết vấn đề này.
