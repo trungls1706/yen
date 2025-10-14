@@ -1,0 +1,1 @@
+https://viblo.asia/p/mo-hinh-truc-quay-toi-uu-frontend-aAY4q17y4Pw
