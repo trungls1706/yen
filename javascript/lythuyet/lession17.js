@@ -35,3 +35,12 @@ cat.run()
 
 
 
+function Cat(name){
+    this.name = name
+}
+
+const phat = new Cat('Phat')
+phat.run = function(){
+    console.log(`${this.name} running`)
+}
+

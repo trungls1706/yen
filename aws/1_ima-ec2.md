@@ -170,3 +170,5 @@
 20. Cách isolate EC2 rẻ nhất trong cùng VPC?  
  A. Dedicated Instance B. Tạo VPC mới  
  C. IAM Role ✅ D. Separate Subnet & Security Group  
+
+

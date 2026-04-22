@@ -19,6 +19,17 @@ function greeting() {
 }
 greeting.call(cat)
 
+
+const dog = {
+    name:'dog',
+    age: 20
+}
+
+function greeting() {
+    console.log(`hi ${this.name} ${this.age}`)
+}
+greeting.call(dog)
+
 // Một trường hợp khác với global và local variable. Ta có ví dụ tương tự như sau:
 var name = "xxx";
 var user = {
@@ -43,3 +54,5 @@ function logAccessToday(msg){
 }
 
 var logAccessToday =   log.bind('Access', 'Today', msg);
+
+/////

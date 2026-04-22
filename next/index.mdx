@@ -1,0 +1,528 @@
+# 📘 Next.js – Full 50 Câu Hỏi Phỏng Vấn
+
+---
+
+# I. NEXT.JS FUNDAMENTALS
+
+## 1. Next.js là gì? Tính năng chính?
+
+Next.js là một React framework hỗ trợ:
+
+- SSR (Server-Side Rendering)
+- SSG (Static Site Generation)
+- ISR (Incremental Static Regeneration)
+- File-based routing
+- API Routes
+- Image optimization
+- Middleware
+- SEO tốt hơn
+
+---
+
+## 2. Next.js khác gì Create React App?
+
+CRA:
+- Chỉ CSR
+- Không có API route
+- SEO kém
+
+Next.js:
+- SSR, SSG, ISR
+- API route
+- Routing tự động
+- SEO tốt
+
+---
+
+## 3. Tạo project Next.js bằng lệnh gì?
+
+```bash
+npx create-next-app@latest
+```
+
+---
+
+## 4. Next.js xử lý SSR như thế nào?
+
+Với Pages Router:
+- Dùng `getServerSideProps`
+
+Với App Router:
+- Server Component mặc định chạy trên server
+
+Mỗi request sẽ render lại HTML.
+
+---
+
+## 5. Mục đích thư mục pages?
+
+Trong Pages Router:
+- Mỗi file tương ứng 1 route
+- Hỗ trợ getStaticProps, getServerSideProps
+
+(App Router thay bằng thư mục app)
+
+---
+
+## 6. Tạo page render server mỗi request?
+
+Pages Router:
+
+```tsx
+export async function getServerSideProps() {
+  return { props: {} }
+}
+```
+
+App Router:
+
+```tsx
+export const dynamic = "force-dynamic"
+```
+
+---
+
+## 7. Next.js hỗ trợ file extension nào?
+
+- .js
+- .jsx
+- .ts
+- .tsx
+
+---
+
+## 8. Environment variables hoạt động thế nào?
+
+File `.env.local`
+
+Biến public phải có prefix:
+
+```
+NEXT_PUBLIC_API_URL=
+```
+
+Biến không prefix chỉ dùng được ở server.
+
+---
+
+## 9. Automatic Static Optimization là gì?
+
+Nếu page không có:
+- getServerSideProps
+- getInitialProps
+
+Next.js sẽ tự build static HTML.
+
+---
+
+# II. PAGES & ROUTING
+
+## 10. File-based routing hoạt động ra sao?
+
+app/page.tsx → /
+app/about/page.tsx → /about
+
+---
+
+## 11. Dynamic routes tạo thế nào?
+
+```tsx
+app/blog/[id]/page.tsx
+```
+
+---
+
+## 12. Truy cập URL params?
+
+```tsx
+export default function Page({ params }) {
+  return <div>{params.id}</div>
+}
+```
+
+---
+
+## 13. Link component dùng để làm gì?
+
+```tsx
+import Link from "next/link"
+```
+
+- Điều hướng client-side
+- Prefetch tự động
+- Không reload page
+
+---
+
+## 14. Catch-all routes là gì?
+
+```tsx
+app/docs/[...slug]/page.tsx
+```
+
+URL: /docs/a/b/c  
+slug = ["a","b","c"]
+
+---
+
+# III. DATA FETCHING
+
+## 15. getStaticProps là gì?
+
+- Chạy lúc build
+- Tạo static HTML
+- Phù hợp blog
+
+---
+
+## 16. getServerSideProps là gì?
+
+- Chạy mỗi request
+- Dùng cho dashboard, auth
+
+---
+
+## 17. ISR triển khai thế nào?
+
+```tsx
+fetch(url, { next: { revalidate: 60 } })
+```
+
+Rebuild sau 60 giây.
+
+---
+
+## 18. Fetch client-side thế nào?
+
+```tsx
+"use client"
+useEffect(() => {
+  fetch(...)
+}, [])
+```
+
+---
+
+## 19. fallback trong getStaticPaths là gì?
+
+- false → 404 nếu không tồn tại
+- true → render tạm, build background
+- blocking → chờ build xong rồi trả về
+
+---
+
+# IV. API ROUTES
+
+## 20. Tạo API route thế nào?
+
+app/api/users/route.ts
+
+```tsx
+export async function GET() {
+  return Response.json({ ok: true })
+}
+```
+
+---
+
+## 21. Dùng middleware trong API được không?
+
+Có. Dùng middleware.ts để:
+
+- Check auth
+- Redirect
+- Validate role
+
+---
+
+## 22. Query params xử lý thế nào?
+
+```tsx
+export async function GET(req: Request) {
+  const { searchParams } = new URL(req.url)
+  const id = searchParams.get("id")
+}
+```
+
+---
+
+# V. STYLING
+
+## 23. Dùng CSS Modules thế nào?
+
+```tsx
+import styles from "./page.module.css"
+```
+
+---
+
+## 24. CSS-in-JS vs styled-components?
+
+- CSS-in-JS viết style trong JS
+- styled-components hỗ trợ dynamic styling
+
+---
+
+## 25. Global styles dùng thế nào?
+
+Import trong layout.tsx:
+
+```tsx
+import "./globals.css"
+```
+
+---
+
+# VI. PERFORMANCE
+
+## 26. Image component giúp gì?
+
+```tsx
+import Image from "next/image"
+```
+
+- Lazy load
+- Resize
+- WebP convert
+- Tối ưu performance
+
+---
+
+## 27. Code splitting hoạt động thế nào?
+
+Next.js tự động split theo route.
+
+Dynamic import:
+
+```tsx
+const Chart = dynamic(() => import("./Chart"))
+```
+
+---
+
+## 28. Prefetch page thế nào?
+
+Link tự prefetch khi trong viewport.
+
+```tsx
+<Link href="/about" prefetch />
+```
+
+---
+
+# VII. DEPLOYMENT
+
+## 29. Lợi ích deploy lên Vercel?
+
+- Tích hợp Next.js tốt nhất
+- Auto build
+- Edge network
+- Dễ cấu hình domain
+
+---
+
+## 30. Cấu hình custom domain?
+
+- Thêm domain trong dashboard
+- Cập nhật DNS trỏ về Vercel
+
+---
+
+## 31. Deploy lên AWS / Netlify?
+
+- Build app
+- Upload build output
+- Hoặc dùng Docker
+
+---
+
+# VIII. INTEGRATIONS
+
+## 32. Tích hợp Tailwind CSS?
+
+```bash
+npm install -D tailwindcss postcss autoprefixer
+```
+
+Import trong globals.css.
+
+---
+
+## 33. Plugin phổ biến?
+
+- next-auth
+- next-seo
+- next-intl
+- SWR
+- Zustand
+
+---
+
+## 34. Bật TypeScript thế nào?
+
+Tạo file tsconfig.json  
+Hoặc dùng:
+
+```bash
+npx create-next-app --typescript
+```
+
+---
+
+# IX. ADVANCED
+
+## 35. Custom server là gì?
+
+Dùng Express hoặc Node server riêng.  
+Chỉ dùng khi cần custom logic đặc biệt.
+
+---
+
+## 36. Internationalized routing?
+
+Cấu hình trong next.config.js:
+
+```js
+i18n: {
+  locales: ['en', 'vi'],
+  defaultLocale: 'vi'
+}
+```
+
+---
+
+## 37. Custom error pages?
+
+Pages Router:
+
+- 404.tsx
+- 500.tsx
+
+App Router:
+
+- not-found.tsx
+- error.tsx
+
+---
+
+# X. BEST PRACTICES
+
+## 38. Cấu trúc folder large-scale?
+
+- app/
+- components/
+- lib/
+- hooks/
+- services/
+- types/
+
+---
+
+## 39. Tổ chức component để reusable?
+
+- Tách UI và logic
+- Dùng custom hooks
+- Tách feature-based folder
+
+---
+
+## 40. Security best practices?
+
+- Validate input
+- Không expose secret
+- Dùng HTTPS
+- Check auth server-side
+- Sanitize data
+
+---
+
+# XI. STATE MANAGEMENT
+
+## 41. Global state không dùng lib?
+
+- React Context
+- useReducer
+
+---
+
+## 42. Khi nào dùng Redux?
+
+- State phức tạp
+- Nhiều component share data
+- Large app
+
+---
+
+## 43. Persist state giữa page?
+
+- localStorage
+- cookies
+- redux-persist
+
+---
+
+# XII. TYPESCRIPT
+
+## 44. Lợi ích TypeScript?
+
+- Type safety
+- Giảm bug runtime
+- Dễ maintain
+
+---
+
+## 45. Type page props?
+
+```tsx
+type Props = {
+  params: { id: string }
+}
+```
+
+---
+
+## 46. Migrating sang TypeScript?
+
+- Rename .js → .tsx
+- Thêm tsconfig.json
+- Fix lỗi type dần
+
+---
+
+## 47. Typing API route?
+
+```tsx
+export async function POST(req: Request): Promise<Response> {
+}
+```
+
+---
+
+## 48. Type checking dynamic route?
+
+```tsx
+interface PageProps {
+  params: { slug: string }
+}
+```
+
+---
+
+## 49. Automatic type generation?
+
+Next.js tự generate types cho:
+
+- params
+- metadata
+- route handlers
+
+---
+
+## 50. tsconfig.json dùng để làm gì?
+
+Cấu hình:
+
+- strict mode
+- baseUrl
+- path alias
+- module resolution

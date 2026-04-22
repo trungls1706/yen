@@ -28,54 +28,80 @@
 //     .catch(err => console.log(err.toString()))
 
 // // add(4, 5)
-// //     .then(res => console.log(res),err=> console.log(err.toString()))  
+// //     .then(res => console.log(res),err=> console.log(err.toString()))
 
+let add2 = (a, b) => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      if (!a || !b) {
+        reject(new Error("Tham số phải là number"));
+      } else {
+        resolve(a + b);
+      }
+    }, 0);
+  });
+};
+
+add2(4, 5)
+  .then((res) => console.log(res))
+  .catch((err) => console.log(err.toString()));
 
 let add = (a, b) => {
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            if (typeof (a) != 'number' || typeof (b) != 'number') {
-                reject(new Error('Tham số phải là number'))
-            } else {
-                resolve(a + b)
-            }
-        }, 0)
-    })
-}
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      if (typeof a != "number" || typeof b != "number") {
+        reject(new Error("Tham số phải là number"));
+      } else {
+        resolve(a + b);
+      }
+    }, 0);
+  });
+};
 
 let multiply = (a, b) => {
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            if (typeof (a) != 'number' || typeof (b) != 'number') {
-                reject(new Error('Tham số phải là number'))
-            } else {
-                resolve(a * b)
-            }
-        }, 0)
-    })
-}
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      if (typeof a != "number" || typeof b != "number") {
+        reject(new Error("Tham số phải là number"));
+      } else {
+        resolve(a * b);
+      }
+    }, 0);
+  });
+};
 
 let devide = (a, b) => {
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            if (typeof (a) != 'number' || typeof (b) != 'number') {
-                reject(new Error('Tham số phải là number'))
-            } else if (b == 0) {
-                reject(new Error('Chia cho 0'))
-            } else {
-                resolve(a / 2)
-            }
-        }, 0)
-    })
-}
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      if (typeof a != "number" || typeof b != "number") {
+        reject(new Error("Tham số phải là number"));
+      } else if (b == 0) {
+        reject(new Error("Chia cho 0"));
+      } else {
+        resolve(a / 2);
+      }
+    }, 0);
+  });
+};
 
 let tinhDientich = (a, b, h) => {
-    return add(a, b)
-        .then(res => multiply(res , h))
-        .then(result => devide(result , 2))
-}
+  return add(a, b)
+    .then((res) => multiply(res, h))
+    .then((result) => devide(result, 2));
+};
 
 tinhDientich(6, 4, 5)
-    .then(res => console.log(res))
-    .catch(err => console.log(err.toString()))
-    
+  .then((res) => console.log(res))
+  .catch((err) => console.log(err.toString()));
+
+function add_a(a, b) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      if (!a || !b) {
+        reject(new Error("Tham số phải là number"));
+      } else {
+        resolve(a + b);
+      }
+    }, 0);
+  });
+}
