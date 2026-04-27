@@ -1,4 +1,4 @@
-function celebrityName(firstName,) {
+function celebrityName(firstName) {
     var nameIntro = "This celebrity is ";
     function lastName(theLastName) {
         return nameIntro + firstName + " " + theLastName;

@@ -23,3 +23,13 @@ let add = () => {
 }
 
 add()
+
+let add2 = (a, b) =>{
+    return new Promise((resolve, reject)=>{
+        if(!a || !b){
+            reject(new Error('Tham số phải là number'))
+        } else{
+            resolve(a + b)
+        }
+    })
+}

@@ -9,26 +9,26 @@
 // https://viblo.asia/p/bind-apply-and-call-trong-javascript-DzVGpoMDvnW
 // https://freetuts.net/hieu-hon-ve-ham-call-va-apply-trong-javascript-786.html?
 
-const cat = {
-    name: 'tom',
-    age: 18
-}
+// const cat = {
+//     name: 'tom',
+//     age: 18
+// }
 
-function greeting() {
-    console.log(`hi ${this.name} ${this.age}`)
-}
-greeting.call(cat)
+// function greeting() {
+//     console.log(`hi ${this.name} ${this.age}`)
+// }
+// greeting.call(cat)
 
 
-const dog = {
-    name:'dog',
-    age: 20
-}
+// const dog = {
+//     name:'dog',
+//     age: 20
+// }
 
-function greeting() {
-    console.log(`hi ${this.name} ${this.age}`)
-}
-greeting.call(dog)
+// function greeting() {
+//     console.log(`hi ${this.name} ${this.age}`)
+// }
+// greeting.call(dog)
 
 // Một trường hợp khác với global và local variable. Ta có ví dụ tương tự như sau:
 var name = "xxx";
@@ -45,14 +45,14 @@ showData() // call global data : return Name: xxx
 showDataBind() // call local data: return Name: yyy
 
 
-function log(level, time, msg) {
-    console.log(level + '-' + time + ':' + msg);
-}
+// function log(level, time, msg) {
+//     console.log(level + '-' + time + ':' + msg);
+// }
 
-function logAccessToday(msg){
-    log('Access', 'Today', msg);
-}
+// function logAccessToday(msg){
+//     log('Access', 'Today', msg);
+// }
 
-var logAccessToday =   log.bind('Access', 'Today', msg);
+// var logAccessToday =   log.bind('Access', 'Today', msg);
 
 /////

@@ -46,3 +46,17 @@ add2(4, 5, (err, result) => {
     console.log(result);
   }
 });
+
+let add3 = (a, b, cb) => {
+  if (!a || !b) {
+    return cb(new Error("err"));
+  }
+  return cb(undefined, a + b);
+};
+
+add3(4, 5, (err, result) => {
+  if (!err) {
+    console.log(result);
+  }
+  return console.log(err);
+});

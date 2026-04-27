@@ -105,3 +105,23 @@ function add_a(a, b) {
     }, 0);
   });
 }
+
+let tinhdientich2 = async (a, b, h) => {
+  try {
+    let res = await add_a(a, b);
+    let res2 = await multiply(res, h);
+    let res3 = await devide(res2, 2);
+    console.log(res3);
+  } catch (err) {
+    console.log(err.toString());
+  }
+};
+
+let tinhdientich3 = (a, b, h) => {
+  return add(a, b)
+    .then((res) => multiply(res, h))
+    .then((result) => devide(result, 2))
+    .catch((err) => console.log(err.toString()));
+};
+
+tinhdientich2(6, 4, 5);
