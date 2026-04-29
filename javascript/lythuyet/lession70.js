@@ -151,8 +151,6 @@ const items = [
 //   },
 // ];
 
-
-
 function buildTree(items) {
   const map = new Map();
   const roots = [];
@@ -195,7 +193,7 @@ function buildTree(items) {
 //     4=>{ id: 4, parentId: 2, name: 'D', children: [] }
 // }
 
-console.log(buildTree(items));
+// console.log(buildTree(items));
 
 //   Map(4) {
 //   1 => { id: 1, parentId: null, name: 'A', children: [] },
@@ -203,3 +201,74 @@ console.log(buildTree(items));
 //   3 => { id: 3, parentId: 1, name: 'C', children: [] },
 //   4 => { id: 4, parentId: 2, name: 'D', children: [] }
 // }
+
+// let arr = [1, 2, 3,-,-,6];
+// arr[5] = 6;
+
+// console.log(arr.length); // [1, 2, 3, <2 empty items>, 6]
+
+function duplicate(arr) {
+  // let result = [];
+  // for (let i of arr) {
+  //   if(!result.includes(i)) {
+  //     result.push(i);
+  //   }
+  // }
+  // return result;
+  // return [... new Set(arr)]3
+}
+
+console.log(duplicate([1, 2, 3, 3, 4, 5, 1])); // [1, 2, 3, 4, 5]
+
+let obj = {
+  name: "Alice",
+  age: 30,
+  city: "New York",
+};
+
+let obj2 = { ...obj };
+let obj3 = Object.assign({}, obj);
+let obj4 = JSON.parse(JSON.stringify(obj));
+let obj5 = structuredClone(obj);
+
+let arr = [];
+for (var i = 0; i < 2; i++) {
+  arr.push(function () {
+    console.log(i);
+  });
+}
+
+// arr[0](); // 5
+// arr[1](); // 5
+// arr[2](); // 5
+// arr[3](); // 5
+// arr[4](); // 5
+
+const checkNonRepeatChar = (str) => {
+  const map = new Map();
+
+  for (let char of str) {
+    map.set(char, (map.get(char) || 0) + 1);
+  }
+
+  for (let char of str) {
+    if (map.get(char) === 1) return char;
+  }
+
+  return "";
+};
+
+// console.log(checkNonRepeatChar("aabbcdde")); // c
+// console.log(checkNonRepeatChar("aabb")); // null
+
+const chunk = (arr, chunk) => {
+  const result = [];
+
+  for (let i = 0; i < arr.length; i += chunk) {
+    result.push(arr.slice(i, i + chunk));
+  }
+
+  return result;
+};
+
+chunk([1, 2, 3, 4, 5, 6, 7], 3);
